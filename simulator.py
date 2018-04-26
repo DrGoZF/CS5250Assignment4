@@ -234,5 +234,24 @@ def main(argv):
     SJF_schedule, SJF_avg_waiting_time =  SJF_scheduling(process_list, alpha = 0.5)
     write_output('SJF.txt', SJF_schedule, SJF_avg_waiting_time )
 
+    print ("try task2 on RR with different time quantum ----")
+    min = sys.maxint
+    for q in range(1, 20):
+        RR_schedule, RR_avg_waiting_time = RR_scheduling(process_list,time_quantum = q)
+        print ("time quantum %d: %.2f" % (q, RR_avg_waiting_time))
+        if min > RR_avg_waiting_time:
+            min = RR_avg_waiting_time
+        write_output('rr/RR%d.txt' % q, RR_schedule, RR_avg_waiting_time)
+    write_output('RR_min.txt', (), min)
+    min = sys.maxint
+    print ("try task2 on SRTF with different alpha ----")
+    for a in range(0, 20):
+        SJF_schedule, SJF_avg_waiting_time = SJF_scheduling(process_list, alpha = a / 20.0)
+        print ("alpha %.2f: %.2f" % (a / 20.0, SJF_avg_waiting_time))
+        if min > SJF_avg_waiting_time:
+            min = SJF_avg_waiting_time
+        write_output('sjf/SJF%d.txt' % a, SJF_schedule, SJF_avg_waiting_time)
+    write_output('SJF_min.txt', (), min)
+
 if __name__ == '__main__':
     main(sys.argv[1:])
