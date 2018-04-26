@@ -193,7 +193,7 @@ def SJF_scheduling(process_list, alpha):
         proc.remaining_time = 0
         count += 1
         waiting_time += current_time - proc.arrive_time - proc.burst_time          
-        predict_time[proc.id] = alpha * predict_time[proc.id] + (1 - alpha) * proc.burst_time
+        predict_time[proc.id] = alpha * proc.burst_time + (1 - alpha) * predict_time[proc.id]
         
     average_waiting_time = waiting_time / float(len(process_list))
     return schedule, average_waiting_time
@@ -236,7 +236,7 @@ def main(argv):
 
     print ("try task2 on RR with different time quantum ----")
     min = sys.maxint
-    for q in range(1, 20):
+    for q in range(1, 11):
         RR_schedule, RR_avg_waiting_time = RR_scheduling(process_list,time_quantum = q)
         print ("time quantum %d: %.2f" % (q, RR_avg_waiting_time))
         if min > RR_avg_waiting_time:
@@ -245,9 +245,9 @@ def main(argv):
     write_output('RR_min.txt', (), min)
     min = sys.maxint
     print ("try task2 on SRTF with different alpha ----")
-    for a in range(0, 20):
-        SJF_schedule, SJF_avg_waiting_time = SJF_scheduling(process_list, alpha = a / 20.0)
-        print ("alpha %.2f: %.2f" % (a / 20.0, SJF_avg_waiting_time))
+    for a in range(0, 10):
+        SJF_schedule, SJF_avg_waiting_time = SJF_scheduling(process_list, alpha = a / 10.0)
+        print ("alpha %.1f: %.2f" % (a / 10.0, SJF_avg_waiting_time))
         if min > SJF_avg_waiting_time:
             min = SJF_avg_waiting_time
         write_output('sjf/SJF%d.txt' % a, SJF_schedule, SJF_avg_waiting_time)
